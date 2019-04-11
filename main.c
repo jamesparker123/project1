@@ -14,8 +14,9 @@ int main() {
 // declare the variables and strings. 
 int a;
 int i, key, A, B;
-char message[] = "DATG";
+char message[9999];
 char convert[9999];
+
 
 // ask the user what task they would like to perform.
 printf("Which task would you like to perform?\n");
@@ -26,28 +27,34 @@ printf("4. Decryption of a message encrypted with a substitution cipher.\n");
 //printf("5. Decryption of a message encrypted with a rotation cipher given cipher text only.\n");
 //printf("6. Decryption of a message encrypted with a substitution cipher given cipher text only.\n");
     scanf("%d", &a);
+    
+    
    
    // performing task based on the user's selection.
     switch(a) {
+        
        case 1: //encrypt a message using rotational cipher given the message and key.
        
+       printf("What message do ou want to encrypt?\n");
+        scanf("%s[^\n]s", &message); // reads all characters up to a new line. 
+        
        // read the key from the user.       
        printf("What is the key? \n");
         scanf("%d", &key);
 
        for(i = 0; i < strlen(message); i++) {
          A = message[i] - 65;
-         if(A == -33) {
+         if(0 <= A <= 25) {
+           B = (A + key) % 26;
+           convert[i] = B + 65;
+         }
+         else {
            B = A;
            convert[i] = B + 65;
            printf("\n");
+         }
        }
-         else {
-           B = (A + key) % 26;
-           convert[i] = B + 65;
-       }
-    }
-    printf("The encrypted message is: %s\n", convert);
+       printf("The encrypted message is: %s\n", convert);
        break;
 
        case 2: // decrypt a message that was encrypted with a rotational cypher. 
