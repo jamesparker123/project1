@@ -7,15 +7,19 @@ This program will be able to perform multiple tasks:
  */
  
 #include <stdio.h>
-#include <string.h>
+#include <string.h> // Include the function strlen().
 
 int main() {
     
-// declare the variables and strings. 
-int a;
-int i, key, A, B;
-char message[9999];
-char convert[9999];
+// Declare the variables and strings. 
+int a; // Used to choose the task.
+int i; // Used as counter and index.
+int key; // The key for the rotational cipher.
+int A; // Other variable used.
+int B; // Other variable used.
+char message[9999]; // String used for the given message.
+char convert[9999]; // String used for the converted message.
+char keysub[] = "PHQGIUMEAYLNOFDXJKRCVSTZWB"; // String used as the key for the substitution cipher.
 
 
 // ask the user what task they would like to perform.
@@ -23,75 +27,132 @@ printf("Which task would you like to perform?\n");
 printf("1. Encryption of a message with a rotation cypher.\n");
 printf("2. Decryption of a message encrypted with a rotation cipher.\n");
 printf("3. Encryption of a message with a substitution cipher.\n");
-printf("4. Decryption of a message encrypted with a substitution cipher.\n");
-//printf("5. Decryption of a message encrypted with a rotation cipher given cipher text only.\n");
-//printf("6. Decryption of a message encrypted with a substitution cipher given cipher text only.\n");
-    scanf("%d", &a);
+
+    scanf("%d", &a); // ask user what task to perform.
     
     
    
-   // performing task based on the user's selection.
+    // Performing task based on the user's selection.
     switch(a) {
         
-       case 1: //encrypt a message using rotational cipher given the message and key.
+       case 1: // Encrypt a message using rotational cipher given the message and key.
        
-       printf("What message do ou want to encrypt?\n");
-        scanf("%s[^\n]s", &message); // reads all characters up to a new line. 
+          // Read message from the user
+          printf("What message do you want to encrypt?\n"); 
+          scanf(" %[^\n]s", message); // reads all characters up to a new line.
         
-       // read the key from the user.       
-       printf("What is the key? \n");
-        scanf("%d", &key);
+          // Read the key from the user.       
+          printf("What is the key? \n");
+          scanf("%d", &key);
 
-       for(i = 0; i < strlen(message); i++) {
-         A = message[i] - 65;
-         if(0 <= A <= 25) {
-           B = (A + key) % 26;
-           convert[i] = B + 65;
-         }
-         else {
-           B = A;
-           convert[i] = B + 65;
-           printf("\n");
-         }
-       }
-       printf("The encrypted message is: %s\n", convert);
-       break;
+          // Conversion of letters
+          for(i = 0; i < strlen(message); i++) {
+           
+             // If lowercase letters are entered, change them to uppercase.
+             if(message[i] >= 97 && message[i] <=122) {
+               message[i] = message[i] - 32;
+             }
+           
+             // Change ASCII code to corresponding value from 0-25.
+             A = message[i] - 65;
+         
+             // Convert all letters.
+             if(0 <= A && A <= 25) {
+                B = (A + key) % 26;
+                convert[i] = B + 65;
+             }
+         
+             // Leave every other character the same.
+             else {
+                B = A;
+                convert[i] = B + 65;
+                printf("\n");
+             }
+    
+          }
+         
+          // Print the encrypted message.
+          printf("The encrypted message is: %s\n", convert);
+          break;
 
-       case 2: // decrypt a message that was encrypted with a rotational cypher. 
+       case 2: // Decrypt a message that was encrypted with a rotational cypher given the message and key. 
        
-       // read the key from the user. 
-       printf("Enter the key that was used to encrypt the message: \n");
-        scanf("%d", &key);
+          // Read the message from the user. 
+          printf("What message do you want to decrypt? \n");
+          scanf(" %[^\n]s", message);
        
-       for(i = 0; i < strlen(message); i++) {
-       A = message[i] - 65;
-       if(A == -33) {
-           B = A;
-           convert[i] = B + 65;
-           printf("\n");
-       }
-       else {
-           B = (A + (26 - key)) % 26;
-           convert[i] = B + 65;
-       }
-    }
-    printf("The decrypted message is: %s\n", convert);
-       break;
+          // Read the key from the user. 
+          printf("Enter the key that was used to encrypt the message: \n");
+          scanf("%d", &key);
        
-       case 3:
+          // Conversion of letters.
+          for(i = 0; i < strlen(message); i++) {
+           
+              // If lowercase letters are entered, change them to uppercase.
+              if(message[i] >= 97 && message[i] <=122) {
+                 message[i] = message[i] - 32;
+              }
+           
+              // Change ASCII code to corresponding value from 0-25.
+              A = message[i] - 65;
+           
+              // Convert all letters.
+              if(0 <= A && A <= 25 ) {
+                 B = (A + (26 - key)) % 26;
+                 convert[i] = B + 65;
+              }
        
-       printf("PUT STUFF HERE\n");
-       break;
-       case 4:
+              // Leave every other character the same.
+              else {
+                 B = A;
+                 convert[i] = B + 65;
+                 printf("\n");
+              }
        
-       printf("PUT STUFF HERE\n");
-       break;
-       //case 5:
+          }
+           
+          // Print the decrypted message.
+          printf("The decrypted message is: %s\n", convert);
+          break;
        
-       //case 6:
+       case 3: // Encrypt a message using a substitution cipher given the message and key.
+          
+          // Read the message from the user.
+          printf("What is the message you want to encrypt? \n");
+          scanf(" %[^\n]s", message);
+
+          // Conversion of letters.
+          for (i = 0; i < strlen(message); i++) {
+              
+              // If lowercase letters are entered, change them to uppercase.
+             if(message[i] >= 97 && message[i] <=122) {
+               message[i] = message[i] - 32;
+             }
+
+              
+             // Change ASCII code to corresponding value from 0-25.
+             A = message[i] - 65;
+             
+             // Convert all letters.
+             if(0 <= A && A <= 25) {
+                B = keysub[A];
+                A = B;
+                convert[i] = A;
+             }
+             
+             // Leave all other characters the same.
+             else {
+                convert[i] = A + 65;
+             }
+          }
+          
+          // Print the Encrypted message.
+          printf("The encrypted message is %s\n", convert);
+          break;
+       
        
        default: 
-       printf("That is not an option.\n");
+        printf("That is not an option.\n");
     }
 
     return 0;
